@@ -42,14 +42,14 @@ Option Explicit
 Public Sub CopyTable(tbl As String, tblNew As String, Optional IncludeData = False)
 On Error GoTo Err_Handler
     
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim StructureOrData As Boolean  'True = structure only, False = structure & data
     
     StructureOrData = Not (IncludeData)
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
 
-    If IsObject(db.TableDefs(tbl)) Then
+    If IsObject(Db.TableDefs(tbl)) Then
         DoCmd.TransferDatabase acExport, "Microsoft Access", CurrentDb.Name, _
             acTable, tbl, tblNew, StructureOnly:=StructureOrData
     End If
@@ -89,13 +89,13 @@ End Sub
 Public Sub RemovePrimaryKey(tbl As String)
 On Error GoTo Err_Handler
     
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim tdf As TableDef
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
 
-    If IsObject(db.TableDefs(tbl)) Then _
-        db.TableDefs(tbl).Indexes.Delete "PrimaryKey"
+    If IsObject(Db.TableDefs(tbl)) Then _
+        Db.TableDefs(tbl).Indexes.Delete "PrimaryKey"
     
     'change to Number vs. Autonumber
     DoCmd.RunSQL "ALTER TABLE " & tbl & " " & _

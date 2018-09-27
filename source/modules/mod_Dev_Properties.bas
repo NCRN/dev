@@ -4,24 +4,14 @@ Option Explicit
 ' =================================
 ' MODULE:       mod_Dev_Properties
 ' Level:        Development module
-' Version:      1.00
+' Version:      1.01
 '
 ' Description:  Property related functions & procedures for version control
 '
 ' Source/date:  Bonnie Campbell, November 22, 2017
 ' Revisions:    BLC - 11/22/2017 - 1.00 - initial version
+'               BLC - 9/26/2018  - 1.01 - removed debug/test note (doesn't apply)
 ' =================================
-
-' ===================================================================================
-'  NOTE:
-'       Functions and subroutines within this module are for debugging and test
-'       purposes.
-'
-'       When the application is ready for release, this module can be
-'       removed without negative impact to the application.
-'
-'       All mod_Debug_XX (debugging) and VCS_XX (version control system) modules can also be removed.
-' ===================================================================================
 
 ' ---------------------------------
 ' FUNCTION:     AddDbProperty
@@ -54,22 +44,22 @@ Public Function AddDbProperty(DbProperty As String, _
                     Optional DbFilename As String = "Current")
 On Error GoTo Err_Handler
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim prop As Property
     
     If DbFilename = "Current" Then
-        Set db = DBEngine(0)(0)
+        Set Db = DBEngine(0)(0)
     Else
-        Set db = OpenDatabase(DbFilename)
+        Set Db = OpenDatabase(DbFilename)
     End If
 
     'add the property
-    Set prop = db.CreateProperty(DbProperty, DbPropertyType, DbPropertyValue)
-    db.Properties.Append prop
+    Set prop = Db.CreateProperty(DbProperty, DbPropertyType, DbPropertyValue)
+    Db.Properties.Append prop
     
 Exit_Handler:
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     Exit Function
     
 Err_Handler:
@@ -103,20 +93,20 @@ Public Function RemoveDbProperty(DbProperty As String, _
                     Optional DbFilename As String = "Current")
 On Error GoTo Err_Handler
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     
     If DbFilename = "Current" Then
-        Set db = DBEngine(0)(0)
+        Set Db = DBEngine(0)(0)
     Else
-        Set db = OpenDatabase(DbFilename)
+        Set Db = OpenDatabase(DbFilename)
     End If
 
     'remove the property
-    db.Properties.Delete DbProperty
+    Db.Properties.Delete DbProperty
     
 Exit_Handler:
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     Exit Function
     
 Err_Handler:
@@ -154,20 +144,20 @@ Public Function UpdateDbProperty(DbProperty As String, _
                     Optional DbFilename As String = "Current")
 On Error GoTo Err_Handler
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     
     If DbFilename = "Current" Then
-        Set db = DBEngine(0)(0)
+        Set Db = DBEngine(0)(0)
     Else
-        Set db = OpenDatabase(DbFilename)
+        Set Db = OpenDatabase(DbFilename)
     End If
 
     'add the property
-    db.Properties(DbProperty) = DbPropertyValue
+    Db.Properties(DbProperty) = DbPropertyValue
     
 Exit_Handler:
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     Exit Function
     
 Err_Handler:

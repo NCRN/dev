@@ -67,7 +67,7 @@ End Enum
 ' Revisions:
 '   BLC - 2/13/2015 - initial version
 ' ---------------------------------
-Public Function GetDescriptions(db As String) As String
+Public Function GetDescriptions(Db As String) As String
 On Error GoTo Err_Handler
     
     Dim Catalog As AccessObject
@@ -77,7 +77,7 @@ On Error GoTo Err_Handler
     
     Set Catalog = CreateObject("ADOX.Catalog")
     Catalog.ActiveConnection = "Provider=Microsoft.Jet.OLEDB.4.0;" & _
-        "Data Source=\" & db & ""
+        "Data Source=\" & Db & ""
         '"Data Source=<path>\<file>.mdb"
  
     'iterate through tables, then table columns to retrieve descriptions
@@ -139,17 +139,17 @@ Public Function TableInfo(tbl As String, Optional OutputToFile = False, _
             Optional strPath As String = "db_documentation_") As String
 On Error GoTo Err_Handler
    
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim tdf As DAO.TableDef
     Dim fld As DAO.field
     Dim idx As DAO.index
     
-    Set db = CurrentDb()
-    Set tdf = db.TableDefs(tbl)
+    Set Db = CurrentDb()
+    Set tdf = Db.TableDefs(tbl)
    
     'retrieve # records
     Dim rs As DAO.Recordset
-    Set rs = db.OpenRecordset(tdf.Name, dbOpenDynaset)
+    Set rs = Db.OpenRecordset(tdf.Name, dbOpenDynaset)
     If Not (rs.BOF And rs.EOF) Then
         rs.MoveLast
     End If
@@ -239,8 +239,8 @@ On Error GoTo Err_Handler
 
 Exit_Handler:
     Set tdf = Nothing
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     
     Exit Function
     
@@ -314,10 +314,10 @@ Public Function DocumentDb() 'Optional tbl = True, Optional idx = True, Optional
 On Error GoTo Err_Handler
 
     Dim strText As String, strPath As String
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim tdf As DAO.TableDef
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
     
     'retrieve database info
     ' CurrentDb.Name = path & name
@@ -327,7 +327,7 @@ On Error GoTo Err_Handler
         & vbCrLf & "***************************************" & vbCrLf
     
     'retrieve table info
-    For Each tdf In db.TableDefs
+    For Each tdf In Db.TableDefs
         ' ignore system and temporary tables
         If Not (tdf.Name Like "MSys*" Or tdf.Name Like "~*") Then
            strText = strText & TableInfo(tdf.Name, True)
@@ -353,8 +353,8 @@ On Error GoTo Err_Handler
     
 Exit_Handler:
     Set tdf = Nothing
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     
     Exit Function
     
@@ -620,7 +620,7 @@ Public Function GetObjectList(ExportToFile As Boolean, _
                              ObjType As Variant)
 On Error GoTo Err_Handler
  
-    Dim db          As DAO.Database
+    Dim Db          As DAO.Database
     Dim rs          As DAO.Recordset
     Dim strSQL      As String
     Dim strText     As String
@@ -655,8 +655,8 @@ On Error GoTo Err_Handler
 '           "     AND (MsysObjects.Type=" & ObjType & "))" & vbCrLf & _
 '           " ORDER BY MsysObjects.Name;"
     
-    Set db = CurrentDb
-    Set rs = db.OpenRecordset(strSQL, dbOpenSnapshot)
+    Set Db = CurrentDb
+    Set rs = Db.OpenRecordset(strSQL, dbOpenSnapshot)
     With rs
         If .RecordCount <> 0 Then
             Do While Not .EOF
@@ -700,7 +700,7 @@ Exit_Handler:
         rs.Close
         Set rs = Nothing
     End If
-    If Not db Is Nothing Then Set db = Nothing
+    If Not Db Is Nothing Then Set Db = Nothing
     Exit Function
     
 Err_Handler:

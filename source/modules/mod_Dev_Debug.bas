@@ -55,19 +55,19 @@ Public FRONT_END_DB_PATH As String      'current location of front end DB
 Public Sub ChangeMSysConnection(ByVal strTable As String, ByVal strConn As String)
 On Error GoTo Err_Handler
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim tdf As DAO.TableDef
 
-    Set db = CurrentDb()
-    Set tdf = db.TableDefs(strTable) 'TableName)
+    Set Db = CurrentDb()
+    Set tdf = Db.TableDefs(strTable) 'TableName)
 
     'Change the connect value
     tdf.connect = strConn '"ODBC;DATABASE=pubs;UID=sa;PWD=;DSN=Publishers"
     
 Exit_Handler:
     Set tdf = Nothing
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     
     Exit Sub
     
@@ -99,11 +99,11 @@ End Sub
 Public Sub ChangeMSysDb(ByVal strTable As String, ByVal strDbPath As String)
 On Error GoTo Err_Handler
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim tdf As DAO.TableDef
 
-    Set db = CurrentDb()
-    Set tdf = db.TableDefs(strTable)
+    Set Db = CurrentDb()
+    Set tdf = Db.TableDefs(strTable)
 
     'Change the database value
     tdf.connect = ";DATABASE=" & strDbPath
@@ -112,8 +112,8 @@ On Error GoTo Err_Handler
     
 Exit_Handler:
     Set tdf = Nothing
-    db.Close
-    Set db = Nothing
+    Db.Close
+    Set Db = Nothing
     
     Exit Sub
     
@@ -406,13 +406,13 @@ Sub SearchDB(SearchText As String, _
              Optional ObjName As String = "*")
 On Error GoTo Err_Handler
 
-    Dim db As Database, obj As AccessObject, ctl As Control, prop As Property
+    Dim Db As Database, obj As AccessObject, ctl As Control, prop As Property
     Dim frm As Form, rpt As Report, mdl As Module
     Dim oLoaded As Boolean, found As Boolean, instances As Long
     Dim sline As Long, scol As Long, eline As Long, ecol As Long
     Dim ary() As Variant, oType As Variant
 
-    Set db = CurrentDb
+    Set Db = CurrentDb
     Application.Echo False
 
     'set array
@@ -601,7 +601,7 @@ Public Function GetAppObj(AppPath As String) As Access.Application
 On Error GoTo Err_Handler
     
     Dim appAccess As Access.Application
-    Dim db As Database
+    Dim Db As Database
  
     'Create instance of Access Application object.
     Set appAccess = CreateObject("Access.Application")
@@ -1697,14 +1697,14 @@ Public Sub ExecuteIt()
 '
 'p.Visible = 1
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim rs As DAO.Recordset
     Dim aryData() As Variant
     Dim aryFields() As Variant
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
     
-    Set rs = db.OpenRecordset("SELECT '';")
+    Set rs = Db.OpenRecordset("SELECT '';")
     
 '    aryData = FetchDbTableFieldInfo("SurveyDataSourceFile")
     'use Array("",...) vs. Split() since array ==> variant array, split ==> string array
@@ -1728,15 +1728,15 @@ Public Sub ExecuteIt()
 End Sub
 
 Public Sub DoIt2()
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim qdf As DAO.QueryDef
     Dim Template As String
     
     Template = "i_site"
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
     
-    With db
+    With Db
         Set qdf = .QueryDefs("usys_temp_qdf")
         
         With qdf
@@ -1830,13 +1830,13 @@ End Sub
 
 
 Public Function FixQDF(Template As String)
-Dim db As DAO.Database
+Dim Db As DAO.Database
 Dim qdf As DAO.QueryDef
 Dim strSQL As String
 
-    Set db = CurrentDb
+    Set Db = CurrentDb
 
-    With db
+    With Db
         Set qdf = .QueryDefs("usys_temp_qdf")
 
         With qdf
@@ -1889,7 +1889,7 @@ End Function
 'from mod_Db - fixing
 Public Sub ZGetTemplates(Optional strSyntax As String = "", Optional Params As String = "")
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim rs As DAO.Recordset
     Dim strSQL As String, strSQLWhere As String, key As String
     Dim Value As Variant
@@ -1912,7 +1912,7 @@ Public Sub ZGetTemplates(Optional strSyntax As String = "", Optional Params As S
     '       EffectiveDate, RetireDate, CreateDate, CreatedBy_ID, LastModified, LastModifiedBy_ID
     strSQL = "SELECT * FROM tsys_Db_Templates" & strInFrontEnd & strSQLWhere & ";"
     
-    Set db = CurrentDb
+    Set Db = CurrentDb
 '    Set db = CodeDb
 '    Dim pathDB As String
 '    pathDB = CurrentProject.FullName
@@ -1925,7 +1925,7 @@ Debug.Print "CodeDb: " & CodeDb.Name
 Debug.Print "CurrentProject.FullName: " & CurrentProject.FullName
     
     
-    Set rs = db.OpenRecordset(strSQL)
+    Set rs = Db.OpenRecordset(strSQL)
     
     'handle no records
     If rs.EOF Then
