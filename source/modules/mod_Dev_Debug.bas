@@ -7,7 +7,7 @@ Public FRONT_END_DB_PATH As String      'current location of front end DB
 ' =================================
 ' MODULE:       mod_Dev_Debug
 ' Level:        Development module
-' Version:      1.05
+' Version:      1.06
 '
 ' Description:  Debugging related functions & procedures for version control
 '
@@ -22,6 +22,7 @@ Public FRONT_END_DB_PATH As String      'current location of front end DB
 '                               BLC - 5/3/2017 - 1.03 - added RunVCS() for running VCS db code
 ' -------------------------------------------------------------------------------
 '               BLC - 9/27/2017 - 1.05 - moved to NCPN_dev
+'               BLC - 1/30/2019 - 1.06 - adjusted to dev
 ' =================================
 
 ' ===================================================================================
@@ -35,6 +36,9 @@ Public FRONT_END_DB_PATH As String      'current location of front end DB
 '       All mod_Debug_XX (debugging) and VCS_XX (version control system) modules can also be removed.
 ' ===================================================================================
 
+' =================================
+'   Db Routines
+' =================================
 ' ---------------------------------
 ' SUB:          ChangeMSysConnection
 ' Description:  Change connection value for a table w/in MSys_Objects (which cannot/shouldn't be directly edited)
@@ -229,76 +233,6 @@ Err_Handler:
 End Sub
 
 ' ---------------------------------
-' SUB:          DebugTest
-' Description:  Run debug testing routines as noted within the subroutine.
-' Assumptions:  This subroutine will be modified as needed during testing.
-' Parameters:   -
-' Returns:      -
-' Throws:       none
-' References:   -
-' Source/date:  Bonnie Campbell, May 27, 2015 - for NCPN tools
-' Adapted:      -
-' Revisions:
-'   BLC - 5/27/2015 - initial version
-'   BLC - 8/10/2015 - fixed compile bug defining i
-' ---------------------------------
-Public Sub DebugTest()
-On Error GoTo Err_Handler
-
-'    Dim strDbPath As String, strDb As String
-'
-'    'invasives be
-''    strDbPath = "C:\___TEST_DATA\test\Invasives_be.accdb"
-'    strDbPath = "Z:\_____LIB\dev\git_projects\TEST_DATA\test2\Invasives_be.accdb"
-'    strDb = ParseFileName(strDbPath)
-'
-'    SetDebugDbPaths strDbPath
-'
-'    'NCPN master plants
-''    strDbPath = "C:\___TEST_DATA\NCPN_Master_Species.accdb"
-'    strDbPath = "Z:\_____LIB\dev\git_projects\TEST_DATA\test2\NCPN_Master_Species.accdb"
-'    strDb = ParseFileName(strDbPath)
-'
-'    SetDebugDbPaths strDbPath
-'
-'    'progress bar test
-'    DoCmd.OpenForm "frm_ProgressBar", acNormal
-'    Dim i As Integer
-'
-'    For i = 1 To 10
-'
-'        Forms("frm_ProgressBar").Increment i * 10, "Preparing report..."
-'    Next
-'
-'    'test parsing
-'    ParseFileName ("C:\___TEST_DATA\test_BE_new\Invasives_be.accdb")
-
-'    Dim p_oTask As Task
-'
-'    Set p_oTask = New Task
-'    With p_oTask
-'        .TaskType = "TaskType.Photo"
-'        .Task = "Testing description"
-'        .Status = Status.Opened
-'        .Priority = Priority.high
-'        .RequestedByID = 3
-'        .CompletedByID = 1
-'        .AddTask
-'    End With
-
-Exit_Handler:
-    Exit Sub
-    
-Err_Handler:
-    Select Case Err.Number
-      Case Else
-        MsgBox "Error #" & Err.Number & ": " & Err.description, vbCritical, _
-            "Error encountered (#" & Err.Number & " - DebugTest[mod_Dev_Debug])"
-    End Select
-    Resume Exit_Handler
-End Sub
-
-' ---------------------------------
 ' FUNCTION:     GetErrorTrappingOption
 ' Description:  Determine the error trapping option setting.
 ' Assumptions:  -
@@ -338,6 +272,10 @@ Err_Handler:
     End Select
     Resume Exit_Handler
 End Function
+
+' =================================
+'   Db Search Routines
+' =================================
 
 ' ---------------------------------
 ' FUNCTION:     SearchQueries
@@ -581,6 +519,10 @@ Err_Handler:
     Resume Exit_Handler
 End Sub
 
+' =================================
+'   VCS Routines
+' =================================
+
 ' ---------------------------------
 ' FUNCTION:     GetAppObj
 ' Description:  Create a VCS database application object
@@ -726,76 +668,9 @@ Err_Handler:
     Resume Exit_Handler
 End Sub
 
-
-Public Sub runtest()
-    'SearchDB "tbl_Quadrat_Species"
-    'SearchDB "tbl_Quadrat_Transect"
-
-    'SearchDB "qry_Transect_Select"
-'     Dim qdf As QueryDef
-'    Set qdf = CurrentDb.QueryDefs("Query6")
-'
-'    'save original SQL
-'    Debug.Print qdf.SQL
-    
-    
-    Dim tbl As String 'DAO.TableDef
-
-    'Set tbl = CurrentDb.TableDefs("DINO_2014_SpeciesCover_by_Route_Result")
-'    tbl = "DINO_2014_SpeciesCover_by_Route_Result"
-'    CollapseRows tbl
-
-'    Dim sfc As New Surface
-'
-'    sfc.ID = 3
-'    sfc.Init 3
-'
-'    Dim d As Scripting.Dictionary
-'
-'    Set d = GetSurfaceIDs()
-'
-'    Debug.Print d("Dung")
-'
-'    Debug.Print g_AppSurfaces("Dung")
-
-'    GetTemplates
-    
-'    GetTemplate "u_surface_cover"
-
-'    GetQuadratPositions
-'
-'    Debug.Print g_AppQuadratPositions("Q1_hm")
-
-'    Dim vcs As Access.Application
-'    Dim db As Database
-''
-'    Set vcs = GetAppObj
-''
-'    vcs.OpenCurrentDatabase VCS_FULL_PATH, False
-''
-'    vcs.Run "ExportAllSourceExt"
-    
-'    Dim t As New VegTransect
-''    Dim aryQuadrats As Variant
-'
-'    With t
-'        .TransectQuadratID = "20170705114218-705547511.577606"
-''        .AddQuadrats
-''        .AddSurfaceMicrohabitats
-''        .GetTransectQuadrats
-''         aryQuadrats = .TransectQuadrats
-''         Debug.Print UBound(aryQuadrats, 2) '2-dimensional (x,1 = cols, x,2 = rows)
-'
-'    End With
-    
-'    Dim s As Surface
-'
-'    With s
-'        .OrigColumnName = "Dead_Wood"
-'        .ID = s.GetIDFromColName
-'    End With
-    
-End Sub
+' =================================
+'   Module Routines
+' =================================
 
 ' ---------------------------------
 ' SUB:          DeleteModule
@@ -946,6 +821,149 @@ Err_Handler:
     Resume Exit_Handler
 End Sub
 
+' =================================
+'   Debug/Test Routines
+' =================================
+
+' ---------------------------------
+' SUB:          DebugTest
+' Description:  Run debug testing routines as noted within the subroutine.
+' Assumptions:  This subroutine will be modified as needed during testing.
+' Parameters:   -
+' Returns:      -
+' Throws:       none
+' References:   -
+' Source/date:  Bonnie Campbell, May 27, 2015 - for NCPN tools
+' Adapted:      -
+' Revisions:
+'   BLC - 5/27/2015 - initial version
+'   BLC - 8/10/2015 - fixed compile bug defining i
+' ---------------------------------
+Public Sub DebugTest()
+On Error GoTo Err_Handler
+
+'    Dim strDbPath As String, strDb As String
+'
+'    'invasives be
+''    strDbPath = "C:\___TEST_DATA\test\Invasives_be.accdb"
+'    strDbPath = "Z:\_____LIB\dev\git_projects\TEST_DATA\test2\Invasives_be.accdb"
+'    strDb = ParseFileName(strDbPath)
+'
+'    SetDebugDbPaths strDbPath
+'
+'    'NCPN master plants
+''    strDbPath = "C:\___TEST_DATA\NCPN_Master_Species.accdb"
+'    strDbPath = "Z:\_____LIB\dev\git_projects\TEST_DATA\test2\NCPN_Master_Species.accdb"
+'    strDb = ParseFileName(strDbPath)
+'
+'    SetDebugDbPaths strDbPath
+'
+'    'progress bar test
+'    DoCmd.OpenForm "frm_ProgressBar", acNormal
+'    Dim i As Integer
+'
+'    For i = 1 To 10
+'
+'        Forms("frm_ProgressBar").Increment i * 10, "Preparing report..."
+'    Next
+'
+'    'test parsing
+'    ParseFileName ("C:\___TEST_DATA\test_BE_new\Invasives_be.accdb")
+
+'    Dim p_oTask As Task
+'
+'    Set p_oTask = New Task
+'    With p_oTask
+'        .TaskType = "TaskType.Photo"
+'        .Task = "Testing description"
+'        .Status = Status.Opened
+'        .Priority = Priority.high
+'        .RequestedByID = 3
+'        .CompletedByID = 1
+'        .AddTask
+'    End With
+
+Exit_Handler:
+    Exit Sub
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - DebugTest[mod_Dev_Debug])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+Public Sub runtest()
+    'SearchDB "tbl_Quadrat_Species"
+    'SearchDB "tbl_Quadrat_Transect"
+
+    'SearchDB "qry_Transect_Select"
+'     Dim qdf As QueryDef
+'    Set qdf = CurrentDb.QueryDefs("Query6")
+'
+'    'save original SQL
+'    Debug.Print qdf.SQL
+    
+    
+    Dim tbl As String 'DAO.TableDef
+
+    'Set tbl = CurrentDb.TableDefs("DINO_2014_SpeciesCover_by_Route_Result")
+'    tbl = "DINO_2014_SpeciesCover_by_Route_Result"
+'    CollapseRows tbl
+
+'    Dim sfc As New Surface
+'
+'    sfc.ID = 3
+'    sfc.Init 3
+'
+'    Dim d As Scripting.Dictionary
+'
+'    Set d = GetSurfaceIDs()
+'
+'    Debug.Print d("Dung")
+'
+'    Debug.Print g_AppSurfaces("Dung")
+
+'    GetTemplates
+    
+'    GetTemplate "u_surface_cover"
+
+'    GetQuadratPositions
+'
+'    Debug.Print g_AppQuadratPositions("Q1_hm")
+
+'    Dim vcs As Access.Application
+'    Dim db As Database
+''
+'    Set vcs = GetAppObj
+''
+'    vcs.OpenCurrentDatabase VCS_FULL_PATH, False
+''
+'    vcs.Run "ExportAllSourceExt"
+    
+'    Dim t As New VegTransect
+''    Dim aryQuadrats As Variant
+'
+'    With t
+'        .TransectQuadratID = "20170705114218-705547511.577606"
+''        .AddQuadrats
+''        .AddSurfaceMicrohabitats
+''        .GetTransectQuadrats
+''         aryQuadrats = .TransectQuadrats
+''         Debug.Print UBound(aryQuadrats, 2) '2-dimensional (x,1 = cols, x,2 = rows)
+'
+'    End With
+    
+'    Dim s As Surface
+'
+'    With s
+'        .OrigColumnName = "Dead_Wood"
+'        .ID = s.GetIDFromColName
+'    End With
+    
+End Sub
 
 Public Sub moduletest()
 
